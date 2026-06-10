@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCHOOLTUMB PREMIUM</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#3b0000,#001b44,#b89b00);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:90px 15px 30px;
+overflow-x:hidden;
+}
+
+body::before{
+content:'';
+position:fixed;
+width:500px;
+height:500px;
+background:#ffcc00;
+filter:blur(160px);
+top:-150px;
+right:-100px;
+opacity:.25;
+}
+
+body::after{
+content:'';
+position:fixed;
+width:450px;
+height:450px;
+background:#001eff;
+filter:blur(180px);
+bottom:-150px;
+left:-100px;
+opacity:.2;
+}
+
+.topbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:70px;
+background:rgba(0,0,0,.35);
+backdrop-filter:blur(12px);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+color:white;
+z-index:999;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:24px;
+font-weight:700;
+}
+
+.brand-logo{
+width:42px;
+height:42px;
+border-radius:12px;
+background:#FFD700;
+display:flex;
+align-items:center;
+justify-content:center;
+color:black;
+font-weight:700;
+}
+
+.container{
+width:100%;
+max-width:500px;
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.15);
+border-radius:30px;
+padding:35px;
+color:white;
+box-shadow:0 15px 45px rgba(0,0,0,.35);
+animation:fade .5s ease;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(25px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.page{
+display:none;
+}
+
+.active{
+display:block;
+}
+
+.logo{
+width:120px;
+height:120px;
+border-radius:25px;
+margin:auto;
+display:block;
+margin-bottom:20px;
+border:4px solid rgba(255,255,255,.2);
+}
+
+h1{
+text-align:center;
+font-size:38px;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+opacity:.9;
+margin-bottom:30px;
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:8px;
+font-weight:500;
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:15px;
+border:none;
+border-radius:16px;
+background:rgba(255,255,255,.18);
+color:white;
+outline:none;
+font-size:15px;
+}
+
+input::placeholder,
+textarea::placeholder{
+color:#eee;
+}
+
+textarea{
+height:100px;
+resize:none;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:25px;
+}
+
+button{
+padding:14px;
+border:none;
+border-radius:16px;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+transform:translateY(-3px);
+}
+
+.btn-primary{
+background:#FFD700;
+color:black;
+}
+
+.btn-secondary{
+background:#003b8f;
+color:white;
+}
+
+.btn-danger{
+background:#7a0000;
+color:white;
+}
+
+.menu{
+display:flex;
+flex-direction:column;
+gap:14px;
+margin-top:20px;
+}
+
+.menu button{
+font-size:16px;
+}
+
+.card{
+background:rgba(255,255,255,.13);
+padding:18px;
+border-radius:20px;
+margin-top:18px;
+line-height:1.8;
+}
+
+.status{
+display:inline-block;
+padding:6px 12px;
+border-radius:999px;
+font-size:13px;
+font-weight:600;
+margin-top:10px;
+}
+
+.pending{
+background:orange;
+color:black;
+}
+
+.approved{
+background:limegreen;
+color:white;
+}
+
+.rejected{
+background:red;
+color:white;
+}
+
+.logout-btn{
+display:none;
+background:#FFD700;
+color:black;
+padding:10px 16px;
+border:none;
+border-radius:12px;
+font-weight:600;
+}
+
+.center{
+text-align:center;
+}
+
+@media(max-width:500px){
+.container{
+padding:25px;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+<div class="brand">
+<div class="brand-logo">S</div>
+SCHOOLTUMB
+</div>
+
+<div style="display:flex;align-items:center;gap:10px;">
+<button class="logout-btn" style="display:inline-block;background:#003b8f;color:white;" onclick="openAI()">🤖 AI</button>
+👤 <span id="userRole">Guest</span>
+<button class="logout-btn" id="logoutBtn" onclick="logout()">Logout</button>
+</div>
+</div>
+
+<div class="container">
+
+<div id="loginPage" class="page active">
+
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" class="logo">
+
+<h1>SCHOOLTUMB</h1>
+<p class="subtitle">Sistem Pengurusan Sekolah Moden</p>
+
+<label>Username</label>
+<input id="user" placeholder="Masukkan username">
+
+<label>Password</label>
+<input type="password" id="pass" placeholder="Masukkan password">
+
+<div class="grid">
+<button class="btn-primary" onclick="login()">Login</button>
+<button class="btn-secondary" onclick="demoLogin()">Demo</button>
+</div>
+
+<p id="loginError" class="center" style="margin-top:15px;color:#ffb3b3"></p>
+
+<div class="card">
+<b>Demo Akaun</b><br><br>
+Pelajar / 1234<br>
+Ibu / 1234<br>
+Warden / 1234
+</div>
+
+</div>
+
+<div id="homePage" class="page">
+<h1>Dashboard</h1>
+<p class="subtitle" id="welcomeText"></p>
+
+<div class="menu">
+<button class="btn-danger" id="outingBtn" onclick="openPage('outingPage')">🏃 Outing Asrama</button>
+<button class="btn-primary" id="pelawatBtn" onclick="openPage('pelawatPage')">🧑‍💼 Pelawat</button>
+<button class="btn-secondary" id="spmBtn" onclick="openPage('spmPage')">🎓 Prestasi SPM</button>
+<button class="btn-danger" id="etrBtn" onclick="openPage('etrPage')">📈 ETR</button>
+<button class="btn-secondary" id="parentBtn" onclick="openPage('parentPage')">👨‍👩‍👧 Ibu Bapa</button>
+<button class="btn-primary" id="wardenBtn" onclick="openPage('wardenPage')">🛡 Approval Warden</button>
+<button class="btn-secondary" onclick="openAI()">🤖 AI SCHOOLTUMB</button>
+</div>
+</div>
+
+<div id="outingPage" class="page">
+<h1>Outing Asrama</h1>
+
+<label>Nama</label>
+<input id="nama">
+
+<label>Kelas</label>
+<input id="kelas">
+
+<label>Sebab</label>
+<textarea id="sebab"></textarea>
+
+<label>Tarikh</label>
+<input type="date" id="tarikh">
+
+<div class="grid">
+<button class="btn-primary" onclick="submitOuting()">Hantar</button>
+<button class="btn-secondary" onclick="home()">Home</button>
+</div>
+
+<div id="outingStatus"></div>
+</div>
+
+<div id="pelawatPage" class="page">
+<h1>Pelawat</h1>
+
+<label>Nama Pelawat</label>
+<input id="namaPelawat">
+
+<label>Jabatan</label>
+<input id="jabatanPelawat">
+
+<div class="grid">
+<button class="btn-primary" onclick="submitPelawat()">Daftar</button>
+<button class="btn-secondary" onclick="home()">Home</button>
+</div>
+
+<div id="pelawatResult"></div>
+</div>
+
+<div id="spmPage" class="page">
+<h1>Prestasi SPM</h1>
+
+<div class="card">
+🎯 GPS Sekolah : <b>2.45</b><br>
+✅ Peratus Lulus : <b>98%</b><br>
+🌟 Straight A : <b>34 Pelajar</b>
+</div>
+
+<button class="btn-secondary" style="width:100%;margin-top:20px" onclick="home()">Home</button>
+</div>
+
+<div id="etrPage" class="page">
+<h1>ETR</h1>
+
+<select id="formSelect" onchange="paparETR()">
+<option value="">Pilih Tingkatan</option>
+<option>Form 1</option>
+<option>Form 2</option>
+<option>Form 3</option>
+<option>Form 4</option>
+<option>Form 5</option>
+</select>
+
+<div id="etrBox"></div>
+
+<button class="btn-secondary" style="width:100%;margin-top:20px" onclick="home()">Home</button>
+</div>
+
+<div id="parentPage" class="page">
+<h1>Ibu Bapa</h1>
+
+<label>Nama Anak</label>
+<input id="anak">
+
+<label>Kelas</label>
+<input id="kelasAnak">
+
+<label>Nama Penjaga</label>
+<input id="penjaga">
+
+<div class="grid">
+<button class="btn-primary" onclick="semakAnak()">Semak</button>
+<button class="btn-secondary" onclick="home()">Home</button>
+</div>
+
+<div id="anakResult"></div>
+</div>
+
+<div id="wardenPage" class="page">
+<h1>Approval Warden</h1>
+<div id="wardenBox"></div>
+<button class="btn-secondary" style="width:100%;margin-top:20px" onclick="home()">Home</button>
+</div>
+
+<div id="aiPage" class="page">
+<h1>🤖 AI SCHOOLTUMB</h1>
+<p class="subtitle">Pembantu Pintar Sekolah</p>
+
+<div class="card" id="aiChatBox">
+🤖 Hai! Saya AI SCHOOLTUMB.<br>
+Tanya apa sahaja berkaitan sekolah.
+</div>
+
+<label>Tanya AI</label>
+<input id="aiInput" placeholder="Contoh: jadual sekolah, ETR, disiplin...">
+
+<div class="grid">
+<button class="btn-primary" onclick="askAI()">Hantar</button>
+<button class="btn-secondary" onclick="home()">Home</button>
+</div>
+</div>
+
+</div>
+
+<script>
+
+let role='';
+
+const users={
+ibu:'1234',
+pelajar:'1234',
+warden:'1234'
+};
+
+function login(){
+
+const u=document.getElementById('user').value.trim();
+const p=document.getElementById('pass').value.trim();
+
+if(users[u] && users[u]===p){
+
+if(u==='ibu') role='Ibu Bapa';
+if(u==='pelajar') role='Abu Bin Ali';
+if(u==='warden') role='Warden';
+
+setupRoleAccess(u);
+openPage('homePage');
+
+document.getElementById('welcomeText').innerHTML=`Selamat datang, <b>${role}</b>`;
+document.getElementById('userRole').innerText=role;
+document.getElementById('logoutBtn').style.display='inline-block';
+document.getElementById('loginError').innerText='';
+
+}else{
+document.getElementById('loginError').innerText='Username atau password salah';
+}
+
+}
+
+function setupRoleAccess(user){
+
+const buttons=['outingBtn','pelawatBtn','spmBtn','etrBtn','parentBtn','wardenBtn'];
+
+buttons.forEach(id=>{
+document.getElementById(id).style.display='none';
+});
+
+if(user==='pelajar'){
+document.getElementById('outingBtn').style.display='block';
+document.getElementById('spmBtn').style.display='block';
+document.getElementById('etrBtn').style.display='block';
+}
+
+if(user==='ibu'){
+document.getElementById('parentBtn').style.display='block';
+document.getElementById('spmBtn').style.display='block';
+}
+
+if(user==='warden'){
+document.getElementById('wardenBtn').style.display='block';
+document.getElementById('pelawatBtn').style.display='block';
+document.getElementById('spmBtn').style.display='block';
+document.getElementById('etrBtn').style.display='block';
+}
+
+}
+
+function demoLogin(){
+document.getElementById('user').value='pelajar';
+document.getElementById('pass').value='1234';
+}
+
+function logout(){
+location.reload();
+}
+
+function openPage(id){
+
+document.querySelectorAll('.page').forEach(page=>{
+page.classList.remove('active');
+});
+
+document.getElementById(id).classList.add('active');
+
+if(id==='wardenPage') showWarden();
+if(id==='outingPage') showOutingStatus();
+
+}
+
+function home(){
+openPage('homePage');
+}
+
+function openAI(){
+openPage('aiPage');
+}
+
+function askAI(){
+
+const input=document.getElementById('aiInput').value.trim();
+
+if(!input){
+alert('Sila masukkan soalan');
+return;
+}
+
+let response='';
+
+if(input.toLowerCase().includes('etr')){
+response='📈 ETR ialah sasaran prestasi pelajar mengikut subjek.';
+}
+else if(input.toLowerCase().includes('spm')){
+response='🎓 Prestasi SPM sekolah sangat cemerlang tahun ini.';
+}
+else if(input.toLowerCase().includes('outing')){
+response='🏃 Outing asrama perlu mendapat kelulusan warden.';
+}
+else{
+response='🤖 AI SCHOOLTUMB menerima pertanyaan anda.';
+}
+
+document.getElementById('aiChatBox').innerHTML=`
+🤖 <b>AI SCHOOLTUMB</b><br><br>
+🧑 Anda: ${input}<br><br>
+${response}
+`;
+
+}
+
+function submitOuting(){
+
+const nama=document.getElementById('nama').value.trim();
+const kelas=document.getElementById('kelas').value.trim();
+const sebab=document.getElementById('sebab').value.trim();
+const tarikh=document.getElementById('tarikh').value;
+
+if(!nama || !kelas || !sebab || !tarikh){
+alert('Sila lengkapkan maklumat');
+return;
+}
+
+const data={
+id:Date.now(),
+nama:nama,
+kelas:kelas,
+sebab:sebab,
+tarikh:tarikh,
+status:'Pending'
+};
+
+let outings=JSON.parse(localStorage.getItem('outingData'));
+
+if(!Array.isArray(outings)){
+outings=[];
+}
+
+outings.push(data);
+
+localStorage.setItem('outingData', JSON.stringify(outings));
+
+document.getElementById('outingStatus').innerHTML=`
+<div class="card">
+✅ Permohonan telah dihantar.<br>
+🛡 Permohonan anda akan disemak oleh warden.
+</div>
+`;
+
+alert('Permohonan telah dihantar dan akan disemak oleh warden.');
+
+showOutingStatus();
+
+}
+
+function showOutingStatus(){
+
+const outings=JSON.parse(localStorage.getItem('outingData')) || [];
+
+if(outings.length===0){
+document.getElementById('outingStatus').innerHTML='';
+return;
+}
+
+let html='';
+
+outings.forEach(data=>{
+
+let statusClass='pending';
+
+if(data.status==='Approved') statusClass='approved';
+if(data.status==='Rejected') statusClass='rejected';
+
+html += `
+<div class="card">
+<b>Status Outing</b><br>
+Nama : ${data.nama}<br>
+Tarikh : ${data.tarikh}<br>
+<span class="status ${statusClass}">${data.status}</span>
+</div>
+`;
+
+});
+
+document.getElementById('outingStatus').innerHTML=html;
+
+}
+
+function submitPelawat(){
+
+const nama=document.getElementById('namaPelawat').value;
+const jabatan=document.getElementById('jabatanPelawat').value;
+
+if(!nama || !jabatan){
+alert('Isi semua maklumat');
+return;
+}
+
+document.getElementById('pelawatResult').innerHTML=`
+<div class="card">
+✅ Pelawat berjaya direkodkan
+</div>
+`;
+
+}
+
+function paparETR(){
+
+const form=document.getElementById('formSelect').value;
+if(form==='') return;
+
+document.getElementById('etrBox').innerHTML=`
+<div class="card">
+<b>${form}</b><br><br>
+BM : A<br>
+BI : B+<br>
+Math : A-<br>
+Sains : B
+</div>
+`;
+
+}
+
+function semakAnak(){
+
+const anak=document.getElementById('anak').value;
+const kelas=document.getElementById('kelasAnak').value;
+const penjaga=document.getElementById('penjaga').value;
+
+if(!anak || !kelas || !penjaga){
+alert('Sila isi semua maklumat');
+return;
+}
+
+document.getElementById('anakResult').innerHTML=`
+<div class="card">
+👦 Nama Anak : <b>${anak}</b><br>
+🏫 Kelas : <b>${kelas}</b><br>
+👨‍👩‍👧 Penjaga : <b>${penjaga}</b><br><br>
+⭐ Akademik : Cemerlang<br>
+✅ Disiplin : Sangat Baik<br>
+📊 Kehadiran : 92%
+</div>
+`;
+
+}
+
+function showWarden(){
+
+const outings=JSON.parse(localStorage.getItem('outingData')) || [];
+
+if(outings.length===0){
+document.getElementById('wardenBox').innerHTML=`
+<div class="card">
+Tiada permohonan outing
+</div>
+`;
+return;
+}
+
+let html='';
+
+outings.forEach(data=>{
+
+let statusClass='pending';
+
+if(data.status==='Approved') statusClass='approved';
+if(data.status==='Rejected') statusClass='rejected';
+
+html += `
+<div class="card">
+👤 ${data.nama}<br>
+🏫 ${data.kelas}<br>
+📅 ${data.tarikh}<br>
+📝 ${data.sebab}<br><br>
+<span class="status ${statusClass}">${data.status}</span>
+</div>
+
+<div class="grid">
+<button class="btn-primary" onclick="approve(${data.id})">Approve</button>
+<button class="btn-danger" onclick="reject(${data.id})">Reject</button>
+</div>
+`;
+
+});
+
+document.getElementById('wardenBox').innerHTML=html;
+
+}
+
+function approve(id){
+
+let outings=JSON.parse(localStorage.getItem('outingData')) || [];
+
+outings=outings.map(item=>{
+if(item.id===id){
+item.status='Approved';
+}
+return item;
+});
+
+localStorage.setItem('outingData',JSON.stringify(outings));
+showWarden();
+
+}
+
+function reject(id){
+
+let outings=JSON.parse(localStorage.getItem('outingData')) || [];
+
+outings=outings.map(item=>{
+if(item.id===id){
+item.status='Rejected';
+}
+return item;
+});
+
+localStorage.setItem('outingData',JSON.stringify(outings));
+showWarden();
+
+}
+
+</script>
+
+</body>
+</html>
